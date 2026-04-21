@@ -21,7 +21,7 @@ export default function ExperiencePage() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="min-h-screen pt-28 sm:pt-32 md:pt-40 pb-16 md:pb-24"
+      className="min-h-screen pt-28 sm:pt-32 md:pt-40  "
     >
       <div className="mx-auto max-w-6xl px-5 sm:px-6">
         <motion.div

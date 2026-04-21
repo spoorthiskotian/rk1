@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { query } from '../db.js';
 import { requireAuth } from '../middleware/auth.js';
+import { sendContactMail } from '../mailer.js';
 
 const router = Router();
 
@@ -15,6 +16,8 @@ router.post('/', async (req, res) => {
      VALUES (?, ?, ?, ?, ?, ?, ?)`,
     [form_type, name, email || null, phone || null, company || null, subject || null, message || null]
   );
+  sendContactMail({ form_type, name, email, phone, company, subject, message })
+    .catch(err => console.error('[contact] email send failed:', err.message));
   res.status(201).json({ ok: true });
 });
 

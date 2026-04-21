@@ -60,7 +60,7 @@ export default function Work({ projects }: { projects: Project[] }) {
   }, [projects, isDesktop]);
 
   return (
-    <section id="work" className="relative py-20 sm:py-24 md:py-32">
+    <section id="work" className="relative ">
       <div className="mx-auto max-w-7xl px-5 sm:px-6 mb-10 md:mb-14 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
           <div className="section-label mb-3">◈ Work · 003</div>

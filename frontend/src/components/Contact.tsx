@@ -13,7 +13,8 @@ export default function Contact({ profile }: { profile: Profile | null }) {
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus('sending'); setMsg('');
-    const fd = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const fd = new FormData(form);
     const payload = {
       form_type: mode,
       name: String(fd.get('name') || ''),
@@ -23,10 +24,33 @@ export default function Contact({ profile }: { profile: Profile | null }) {
       subject: String(fd.get('subject') || ''),
       message: String(fd.get('message') || ''),
     };
+
+    const label = mode === 'business' ? 'Business Inquiry' : 'Personal Message';
+    const subjectLine = `[${label}] ${payload.subject || payload.name}`;
+    const bodyLines = [
+      `New ${label.toLowerCase()} from the portfolio site.`,
+      '',
+      `Name:     ${payload.name}`,
+      payload.email   ? `Email:    ${payload.email}`   : '',
+      payload.phone   ? `Phone:    ${payload.phone}`   : '',
+      payload.company ? `Company:  ${payload.company}` : '',
+      payload.subject ? `Subject:  ${payload.subject}` : '',
+      '',
+      'Message:',
+      payload.message || '(no message)',
+    ].filter(Boolean).join('\n');
+
+    const gmailUrl =
+      'https://mail.google.com/mail/?view=cm&fs=1' +
+      '&to=' + encodeURIComponent('spoorthisk24@gmail.com') +
+      '&su=' + encodeURIComponent(subjectLine) +
+      '&body=' + encodeURIComponent(bodyLines);
+
     try {
-      await api.post('/contact', payload);
+      await api.post('/contact', payload).catch(() => {});
+      window.open(gmailUrl, '_blank', 'noopener,noreferrer');
       setStatus('sent');
-      (e.target as HTMLFormElement).reset();
+      form.reset();
     } catch (err: any) {
       setStatus('error');
       setMsg(err?.message || 'Something went wrong');
@@ -44,11 +68,11 @@ export default function Contact({ profile }: { profile: Profile | null }) {
             <span className="text-silver-500 italic font-normal">something loud.</span>
           </h2>
           <p className="mt-6 text-silver-400 max-w-md">
-            Business or personal — pick a channel. Expect a reply within a day.
+            Business or personal — pick a channel. 
           </p>
 
           <div className="mt-8 sm:mt-10 space-y-2 text-sm">
-            <Row label="Email" value={profile?.email} href={`mailto:${profile?.email || ''}`} />
+            <Row label="Email" value={profile?.email} href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(profile?.email || '')}`} />
             <Row label="Business WA" value={profile?.business_whatsapp} href={`https://wa.me/${(profile?.business_whatsapp || '').replace(/\D/g, '')}`} />
             <Row label="Personal WA" value={profile?.personal_whatsapp} href={`https://wa.me/${(profile?.personal_whatsapp || '').replace(/\D/g, '')}`} />
             <Row label="LinkedIn"  value={profile?.linkedin_url} href={profile?.linkedin_url} />
@@ -128,7 +152,7 @@ export default function Contact({ profile }: { profile: Profile | null }) {
                   >
                     {status === 'sending' ? 'Sending…' : (mode === 'business' ? 'Send brief →' : 'Send message →')}
                   </button>
-                  {status === 'sent' && <span className="text-sm text-silver-300">Received. I&rsquo;ll be in touch.</span>}
+                  {status === 'sent' && <span className="text-sm text-silver-300">Gmail opened — hit Send there to deliver.</span>}
                   {status === 'error' && <span className="text-sm text-red-400">{msg}</span>}
                 </div>
               </motion.form>

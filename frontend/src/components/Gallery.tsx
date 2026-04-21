@@ -5,11 +5,11 @@ export default function Gallery({ items }: { items: GalleryItem[] }) {
   if (!items.length) return null;
 
   return (
-    <section id="gallery" className="relative py-20 sm:py-24 md:py-28 overflow-hidden">
+    <section id="gallery" className="relative py-8 sm:py-14 md:py-16 overflow-hidden">
       <div className="mx-auto max-w-7xl px-5 sm:px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-12 gap-4">
           <div>
-            <div className="section-label mb-3">◈ Gallery · Field Notes</div>
+            <div className="section-label mb-3">◈ Gallery</div>
             <h2 className="font-display font-bold text-4xl sm:text-5xl md:text-7xl silver-shine tracking-tightest leading-none">
               From the workbench
             </h2>

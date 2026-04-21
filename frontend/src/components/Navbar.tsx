@@ -57,12 +57,12 @@ export default function Navbar() {
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 flex items-center justify-between gap-3">
         <Link to="/" className="group flex items-center gap-2 shrink-0" aria-label="Home">
-          <div className="relative w-9 h-9 md:w-10 md:h-10 grid place-items-center rounded-lg silver-border glass">
-            <span className="font-display font-bold text-base md:text-lg silver-shine">RK</span>
+          <div className="relative w-14 h-14 md:w-16 md:h-16 grid place-items-center rounded-lg silver-border glass">
+            <span className="font-display font-bold text-2xl md:text-3xl silver-shine">RK</span>
           </div>
-          <span className="hidden md:block font-mono text-[0.68rem] tracking-[0.3em] text-silver-400 uppercase">
-            Engineer · Founder
-          </span>
+          {/* <span className="hidden md:block font-mono text-[0.68rem] tracking-[0.3em] text-silver-400 uppercase">
+            Engineer 
+          </span> */}
         </Link>
 
         <nav className="hidden md:flex items-center gap-1 glass silver-border rounded-full px-2 py-1.5">
