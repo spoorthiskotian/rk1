@@ -115,14 +115,14 @@ export default function Loader() {
         </motion.div>
 
         {/* Label */}
-        <motion.div
+        {/* <motion.div
           className="absolute -bottom-16 sm:-bottom-20 left-1/2 -translate-x-1/2 whitespace-nowrap text-[0.65rem] sm:text-[0.7rem] tracking-[0.3em] text-silver-500 font-mono uppercase"
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.8 }}
         >
           Systems · Online
-        </motion.div>
+        </motion.div> */}
       </div>
     </motion.div>
   );
