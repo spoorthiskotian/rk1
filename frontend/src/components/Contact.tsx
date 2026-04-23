@@ -42,7 +42,7 @@ export default function Contact({ profile }: { profile: Profile | null }) {
 
     const gmailUrl =
       'https://mail.google.com/mail/?view=cm&fs=1' +
-      '&to=' + encodeURIComponent('spoorthisk24@gmail.com') +
+      '&to=' + encodeURIComponent('rohan.t.kini@gmail.com') +
       '&su=' + encodeURIComponent(subjectLine) +
       '&body=' + encodeURIComponent(bodyLines);
 
@@ -65,7 +65,7 @@ export default function Contact({ profile }: { profile: Profile | null }) {
           <h2 className="font-display font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tightest leading-[0.9]">
             <span className="silver-shine">Let&rsquo;s build</span>
             <br />
-            {/* <span className="text-silver-500 italic font-normal">something loud.</span> */}
+            <span className="text-silver-500 italic font-normal">something loud.</span>
           </h2>
           <p className="mt-6 text-silver-400 max-w-md">
             Business or personal — pick a channel. 

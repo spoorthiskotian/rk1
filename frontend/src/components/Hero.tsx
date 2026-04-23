@@ -265,8 +265,7 @@ export default function Hero({ profile }: { profile: Profile | null }) {
             animate={{ y: [0, -8, 0] }}
             transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
           >
-            <div className="text-silver-400 uppercase tracking-[0.25em] text-[0.6rem] mb-1">Status</div>
-            Building · Shipping · Calibrating
+            <div className="text-silver-400 uppercase tracking-[0.25em] text-[0.6rem] mb-1">Rohan Kini</div>
           </motion.div>
         </motion.div>
 

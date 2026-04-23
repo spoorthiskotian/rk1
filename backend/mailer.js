@@ -20,7 +20,7 @@ export async function sendContactMail(payload) {
     console.warn('[mailer] SMTP not configured — skipping email');
     return;
   }
-  const to = process.env.MAIL_TO || 'spoorthisk24@gmail.com';
+  const to = process.env.MAIL_TO || 'rohan.t.kini@gmail.com';
   const from = process.env.MAIL_FROM || user;
   const { form_type, name, email, phone, company, subject, message } = payload;
 
