@@ -8,18 +8,20 @@ import Work from '@/components/Work';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import { api } from '@/lib/api';
-import type { Profile, GalleryItem, Project } from '@/lib/types';
+import type { Profile, GalleryItem, Project, Education } from '@/lib/types';
 
 export default function Home() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [gallery, setGallery] = useState<GalleryItem[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
+  const [educations, setEducations] = useState<Education[]>([]);
   const location = useLocation();
 
   useEffect(() => {
     api.get<Profile>('/profile').then(setProfile).catch(() => {});
     api.get<GalleryItem[]>('/gallery').then(setGallery).catch(() => {});
     api.get<Project[]>('/projects').then(setProjects).catch(() => {});
+    api.get<Education[]>('/educations').then(setEducations).catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -40,7 +42,7 @@ export default function Home() {
     >
       <Hero profile={profile} />
       <Gallery items={gallery} />
-      <About profile={profile} />
+      <About profile={profile} educations={educations} />
       <Work projects={projects} />
       <Contact profile={profile} />
       <Footer profile={profile} />

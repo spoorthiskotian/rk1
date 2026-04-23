@@ -94,7 +94,7 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2 sm:gap-3">
-          <a href="tel:+919000011111" className="btn-silver text-xs sm:text-sm whitespace-nowrap">
+          <a href="tel:+916361529586" className="btn-silver text-xs sm:text-sm whitespace-nowrap">
             <span className="w-1.5 h-1.5 rounded-full bg-ink-800 animate-pulse" />
             <span className="hidden sm:inline">Call me</span>
             <span className="sm:hidden">Call</span>

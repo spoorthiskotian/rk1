@@ -9,6 +9,7 @@ import profileRoutes from './routes/profile.js';
 import galleryRoutes from './routes/gallery.js';
 import projectRoutes from './routes/projects.js';
 import experienceRoutes from './routes/experiences.js';
+import educationRoutes from './routes/educations.js';
 import contactRoutes from './routes/contact.js';
 import uploadRoutes from './routes/uploads.js';
 
@@ -28,6 +29,7 @@ app.use('/api/profile', profileRoutes);
 app.use('/api/gallery', galleryRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/experiences', experienceRoutes);
+app.use('/api/educations', educationRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/uploads', uploadRoutes);
 

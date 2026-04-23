@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { api, getToken, setToken } from '@/lib/api';
-import type { Profile, GalleryItem, Project, Experience } from '@/lib/types';
+import type { Profile, GalleryItem, Project, Experience, Education } from '@/lib/types';
 
-type Tab = 'profile' | 'gallery' | 'projects' | 'experiences';
+type Tab = 'profile' | 'gallery' | 'projects' | 'experiences' | 'educations';
 
 export default function AdminDashboard() {
   const nav = useNavigate();
@@ -46,7 +46,7 @@ export default function AdminDashboard() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 mt-6 sm:mt-10 grid lg:grid-cols-12 gap-6 lg:gap-8">
         <aside className="lg:col-span-3">
           <nav className="glass silver-border rounded-2xl p-2 flex flex-wrap lg:flex-col gap-1">
-            {(['profile', 'gallery', 'projects', 'experiences'] as Tab[]).map(t => (
+            {(['profile', 'gallery', 'projects', 'experiences', 'educations'] as Tab[]).map(t => (
               <button
                 key={t}
                 onClick={() => setTab(t)}
@@ -73,6 +73,7 @@ export default function AdminDashboard() {
             {tab === 'gallery'     && <GalleryPanel />}
             {tab === 'projects'    && <ProjectsPanel />}
             {tab === 'experiences' && <ExperiencesPanel />}
+            {tab === 'educations'  && <EducationsPanel />}
           </motion.div>
         </main>
       </div>
@@ -97,10 +98,6 @@ function ProfilePanel() {
     ['name', 'Name'],
     ['title', 'Title / role'],
     ['tagline', 'Tagline', 'textarea'],
-    ['education_university', 'University'],
-    ['education_college', 'College'],
-    ['education_branch', 'Branch'],
-    ['education_program', 'Program'],
     ['about_description', 'About description', 'textarea'],
     ['email', 'Email'],
     ['business_whatsapp', 'Business WhatsApp'],
@@ -388,6 +385,92 @@ function ExperiencesPanel() {
             <div className="flex-1 min-w-0">
               <div className="font-display text-base sm:text-lg text-silver-100 truncate">{e.company}</div>
               <div className="text-[0.7rem] sm:text-xs text-silver-400 truncate">{e.role} · {e.start_year} – {e.end_year || 'Present'}</div>
+            </div>
+            <div className="flex gap-2 ml-auto sm:ml-0">
+              <button onClick={() => setEditing(e)} className="btn-ghost text-xs">Edit</button>
+              <button onClick={() => remove(e.id)} className="btn-ghost text-xs text-red-300">Delete</button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ───────────────────────── Educations ───────────────────────── */
+
+const EMPTY_EDU: Partial<Education> = {
+  institution: '', degree: '', field: '', description: '',
+  start_year: '', end_year: '', sort_order: 0,
+};
+
+function EducationsPanel() {
+  const [items, setItems] = useState<Education[]>([]);
+  const [editing, setEditing] = useState<Partial<Education> | null>(null);
+
+  const refresh = () => api.get<Education[]>('/educations').then(setItems);
+  useEffect(() => { refresh(); }, []);
+
+  async function save() {
+    if (!editing) return;
+    if (!editing.institution?.trim()) return;
+    if (editing.id) await api.put(`/educations/${editing.id}`, editing);
+    else            await api.post('/educations', editing);
+    setEditing(null);
+    refresh();
+  }
+  async function remove(id: number) {
+    if (!confirm('Delete this education entry?')) return;
+    await api.delete(`/educations/${id}`);
+    refresh();
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-wrap justify-between items-center gap-3">
+        <h2 className="font-display text-2xl sm:text-3xl silver-shine">Education</h2>
+        <button onClick={() => setEditing({ ...EMPTY_EDU })} className="btn-silver text-sm">+ New entry</button>
+      </div>
+
+      {editing && (
+        <div className="glass silver-border rounded-2xl p-5 sm:p-6 space-y-3">
+          <h3 className="font-display text-xl silver-shine mb-2">
+            {editing.id ? 'Edit entry' : 'New entry'}
+          </h3>
+          <div className="grid sm:grid-cols-2 gap-3">
+            <LabeledInput label="Institution (university / college)" value={editing.institution} onChange={v => setEditing({ ...editing, institution: v })} />
+            <LabeledInput label="Degree (e.g. B.E., M.Tech)" value={editing.degree || ''} onChange={v => setEditing({ ...editing, degree: v })} />
+            <LabeledInput label="Field / branch" value={editing.field || ''} onChange={v => setEditing({ ...editing, field: v })} />
+            <LabeledInput label="Sort order" value={String(editing.sort_order ?? 0)} onChange={v => setEditing({ ...editing, sort_order: Number(v) || 0 })} />
+            <LabeledInput label="Start year" value={editing.start_year || ''} onChange={v => setEditing({ ...editing, start_year: v })} />
+            <LabeledInput label="End year" value={editing.end_year || ''} onChange={v => setEditing({ ...editing, end_year: v })} />
+          </div>
+          <div>
+            <label className="block text-xs font-mono uppercase tracking-[0.2em] text-silver-400 mb-2">Description</label>
+            <textarea rows={4} className="field resize-none"
+              value={editing.description || ''}
+              onChange={e => setEditing({ ...editing, description: e.target.value })}
+            />
+          </div>
+          <div className="flex gap-3 pt-2">
+            <button onClick={save} className="btn-silver text-sm">Save</button>
+            <button onClick={() => setEditing(null)} className="btn-ghost text-sm">Cancel</button>
+          </div>
+        </div>
+      )}
+
+      <div className="glass silver-border rounded-2xl divide-y divide-silver-700/30">
+        {items.length === 0 && (
+          <div className="p-5 text-silver-400 text-sm">No education entries yet. Add one above.</div>
+        )}
+        {items.map(e => (
+          <div key={e.id} className="p-3 sm:p-4 flex flex-wrap sm:flex-nowrap items-center gap-3 sm:gap-4">
+            <div className="flex-1 min-w-0">
+              <div className="font-display text-base sm:text-lg text-silver-100 truncate">{e.institution}</div>
+              <div className="text-[0.7rem] sm:text-xs text-silver-400 truncate">
+                {[e.degree, e.field].filter(Boolean).join(' · ') || '—'}
+                {(e.start_year || e.end_year) && ` · ${e.start_year || '—'} – ${e.end_year || 'Present'}`}
+              </div>
             </div>
             <div className="flex gap-2 ml-auto sm:ml-0">
               <button onClick={() => setEditing(e)} className="btn-ghost text-xs">Edit</button>

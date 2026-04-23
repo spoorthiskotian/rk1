@@ -70,6 +70,18 @@ CREATE TABLE IF NOT EXISTS experiences (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS educations (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  institution VARCHAR(255) NOT NULL,
+  degree VARCHAR(180),
+  field VARCHAR(180),
+  start_year VARCHAR(16),
+  end_year VARCHAR(16),
+  description TEXT,
+  sort_order INT DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE IF NOT EXISTS contact_messages (
   id INT AUTO_INCREMENT PRIMARY KEY,
   form_type ENUM('business','personal') NOT NULL,

@@ -1,13 +1,28 @@
 import { motion } from 'framer-motion';
-import type { Profile } from '@/lib/types';
+import type { Profile, Education } from '@/lib/types';
 
-export default function About({ profile }: { profile: Profile | null }) {
-  const edu = [
-    ['University', profile?.education_university],
-    ['College', profile?.education_college],
-    ['Branch', profile?.education_branch],
-    ['Program', profile?.education_program],
-  ].filter(([, v]) => !!v) as [string, string][];
+export default function About({
+  profile,
+  educations = [],
+}: {
+  profile: Profile | null;
+  educations?: Education[];
+}) {
+  // Fall back to legacy single-entry profile fields if no education rows exist
+  const list: Education[] = educations.length
+    ? educations
+    : [{
+        id: 0,
+        institution: profile?.education_college || profile?.education_university || '',
+        degree: profile?.education_program || null,
+        field: profile?.education_branch || null,
+        start_year: null,
+        end_year: null,
+        description: profile?.education_university && profile?.education_college
+          ? profile.education_university
+          : null,
+        sort_order: 0,
+      }].filter(e => e.institution);
 
   return (
     <section id="about" className="relative py-20 sm:py-24 md:py-32 overflow-hidden">
@@ -50,25 +65,42 @@ export default function About({ profile }: { profile: Profile | null }) {
               'I dont specialize — I span disciplines. Software, hardware, robotics, IoT, automotive: I work across all of them because the problems worth solving rarely fit inside one field.'}
           </motion.p>
 
-          {edu.length > 0 && (
+          {list.length > 0 && (
             <div className="glass silver-border rounded-2xl p-6 sm:p-8">
               <div className="section-label mb-5">◈ Education</div>
-              <dl className="grid sm:grid-cols-2 gap-x-6 sm:gap-x-8 gap-y-5">
-                {edu.map(([k, v]) => (
+              <div className="space-y-5">
+                {list.map((e, i) => (
                   <motion.div
-                    key={k}
+                    key={e.id || i}
                     initial={{ opacity: 0, y: 8 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.5 }}
+                    transition={{ duration: 0.5, delay: i * 0.05 }}
+                    className={i > 0 ? 'pt-5 border-t border-silver-700/30' : ''}
                   >
-                    <dt className="font-mono text-[0.65rem] tracking-[0.25em] text-silver-500 uppercase mb-1">
-                      {k}
-                    </dt>
-                    <dd className="text-silver-100">{v}</dd>
+                    <div className="flex flex-wrap items-baseline justify-between gap-2">
+                      <div className="font-display text-xl sm:text-2xl text-silver-100">
+                        {e.institution}
+                      </div>
+                      {(e.start_year || e.end_year) && (
+                        <div className="font-mono text-[0.65rem] tracking-[0.25em] text-silver-500 uppercase">
+                          {e.start_year || '—'} – {e.end_year || 'Present'}
+                        </div>
+                      )}
+                    </div>
+                    {(e.degree || e.field) && (
+                      <div className="mt-1 text-silver-300 text-sm">
+                        {[e.degree, e.field].filter(Boolean).join(' · ')}
+                      </div>
+                    )}
+                    {e.description && (
+                      <p className="mt-2 text-silver-400 text-sm leading-relaxed">
+                        {e.description}
+                      </p>
+                    )}
                   </motion.div>
                 ))}
-              </dl>
+              </div>
             </div>
           )}
 

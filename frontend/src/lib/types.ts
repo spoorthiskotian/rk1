@@ -49,3 +49,14 @@ export type Experience = {
   end_year: string | null;
   sort_order: number;
 };
+
+export type Education = {
+  id: number;
+  institution: string;
+  degree: string | null;
+  field: string | null;
+  start_year: string | null;
+  end_year: string | null;
+  description: string | null;
+  sort_order: number;
+};
