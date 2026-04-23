@@ -15,7 +15,7 @@ export default function Gallery({ items }: { items: GalleryItem[] }) {
             </h2>
           </div>
           <p className="hidden md:block max-w-sm text-silver-400 text-sm">
-            Moments caught between prototypes. Cables, code, and the occasional 3&nbsp;a.m. breakthrough.
+            Moments caught between prototypes. Cables & code.
           </p>
         </div>
 

@@ -33,8 +33,8 @@ export default function About({ profile }: { profile: Profile | null }) {
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
             className="font-display font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[0.9] tracking-tightest"
           >
-            <span className="silver-shine">A polymath, </span>
-            <span className="text-silver-500 italic font-normal">by stubbornness.</span>
+            <span className="silver-shine">An Engineer,</span>
+            <span className="text-silver-500 italic font-normal"> Without Borders.</span>
           </motion.h2>
         </div>
 
@@ -47,7 +47,7 @@ export default function About({ profile }: { profile: Profile | null }) {
             className="text-silver-200 text-base sm:text-lg md:text-xl leading-relaxed"
           >
             {profile?.about_description ||
-              'Polymath engineer shipping systems from silicon to cloud — designs ECUs and robots by day, writes cloud microservices by night, and leads a product company bringing them together.'}
+              'I dont specialize — I span disciplines. Software, hardware, robotics, IoT, automotive: I work across all of them because the problems worth solving rarely fit inside one field.'}
           </motion.p>
 
           {edu.length > 0 && (
@@ -74,9 +74,7 @@ export default function About({ profile }: { profile: Profile | null }) {
 
           <div className="grid grid-cols-3 gap-3 sm:gap-4">
             {[
-              ['11+', 'Years building'],
-              ['40+', 'Systems shipped'],
-              ['5', 'Disciplines merged'],
+              ['5+', 'Years building'],
             ].map(([n, l], i) => (
               <motion.div
                 key={l}

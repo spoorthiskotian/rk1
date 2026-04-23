@@ -68,9 +68,9 @@ export default function Work({ projects }: { projects: Project[] }) {
             <span className="silver-shine">Selected builds.</span>
           </h2>
         </div>
-        <p className="hidden sm:block max-w-xs text-silver-400 text-sm">
+        {/* <p className="hidden sm:block max-w-xs text-silver-400 text-sm">
           <span className="hidden md:inline">Hover to unfold.</span> Tap to open the full case.
-        </p>
+        </p> */}
       </div>
 
       <div
