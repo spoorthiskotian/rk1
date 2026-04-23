@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import type { Profile } from '@/lib/types';
 import { api } from '@/lib/api';
+import { SocialIcon, type SocialKey } from './SocialIcons';
 
 type Mode = 'business' | 'personal';
 
@@ -71,14 +72,14 @@ export default function Contact({ profile }: { profile: Profile | null }) {
             Business or personal — pick a channel. 
           </p>
 
-          <div className="mt-8 sm:mt-10 space-y-2 text-sm">
-            <Row label="Email" value={profile?.email} href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(profile?.email || '')}`} />
-            <Row label="Business WA" value={profile?.business_whatsapp} href={`https://wa.me/${(profile?.business_whatsapp || '').replace(/\D/g, '')}`} />
-            <Row label="Personal WA" value={profile?.personal_whatsapp} href={`https://wa.me/${(profile?.personal_whatsapp || '').replace(/\D/g, '')}`} />
-            <Row label="LinkedIn"  value={profile?.linkedin_url} href={profile?.linkedin_url} />
-            <Row label="Instagram" value={profile?.instagram_url} href={profile?.instagram_url} />
-            <Row label="Facebook"  value={profile?.facebook_url} href={profile?.facebook_url} />
-            <Row label="X"         value={profile?.x_url}         href={profile?.x_url} />
+          <div className="mt-8 sm:mt-10 flex flex-wrap gap-3">
+            <IconLink kind="email"     label="Email"               value={profile?.email}              href={profile?.email ? `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(profile.email)}` : undefined} />
+            <IconLink kind="whatsapp"  label="WhatsApp (Business)" value={profile?.business_whatsapp}  href={profile?.business_whatsapp ? `https://wa.me/${profile.business_whatsapp.replace(/\D/g, '')}` : undefined} />
+            <IconLink kind="whatsapp"  label="WhatsApp (Personal)" value={profile?.personal_whatsapp}  href={profile?.personal_whatsapp ? `https://wa.me/${profile.personal_whatsapp.replace(/\D/g, '')}` : undefined} />
+            <IconLink kind="linkedin"  label="LinkedIn"            value={profile?.linkedin_url}       href={profile?.linkedin_url} />
+            <IconLink kind="instagram" label="Instagram"           value={profile?.instagram_url}      href={profile?.instagram_url} />
+            <IconLink kind="facebook"  label="Facebook"            value={profile?.facebook_url}       href={profile?.facebook_url} />
+            <IconLink kind="x"         label="X"                   value={profile?.x_url}              href={profile?.x_url} />
           </div>
         </div>
 
@@ -164,19 +165,20 @@ export default function Contact({ profile }: { profile: Profile | null }) {
   );
 }
 
-function Row({ label, value, href }: { label: string; value?: string | null; href?: string | null }) {
-  if (!value) return null;
+function IconLink({
+  kind, label, value, href,
+}: { kind: SocialKey; label: string; value?: string | null; href?: string | null }) {
+  if (!value || !href) return null;
   return (
     <a
-      href={href || '#'}
+      href={href}
       target="_blank"
       rel="noreferrer"
-      className="group flex items-center justify-between gap-4 border-t border-silver-700/40 py-3 hover:border-silver-300/50 transition"
+      aria-label={label}
+      title={label}
+      className="group grid place-items-center w-12 h-12 rounded-xl silver-border glass text-silver-300 hover:text-silver-100 hover:border-silver-300/60 transition"
     >
-      <span className="font-mono text-[0.65rem] uppercase tracking-[0.3em] text-silver-500 shrink-0">
-        {label}
-      </span>
-      <span className="text-silver-200 group-hover:silver-shine transition truncate min-w-0 text-right">{value} →</span>
+      <SocialIcon kind={kind} className="w-5 h-5" />
     </a>
   );
 }

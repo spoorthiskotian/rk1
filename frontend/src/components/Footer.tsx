@@ -1,13 +1,24 @@
 import { Link } from 'react-router-dom';
 import type { Profile } from '@/lib/types';
+import { SocialIcon, type SocialKey } from './SocialIcons';
 
 export default function Footer({ profile }: { profile: Profile | null }) {
-  const links = [
-    ['LinkedIn', profile?.linkedin_url],
-    ['Instagram', profile?.instagram_url],
-    ['Facebook', profile?.facebook_url],
-    ['X', profile?.x_url],
-  ].filter(([, v]) => v) as [string, string][];
+  const socials: { kind: SocialKey; label: string; href: string }[] = [
+    profile?.linkedin_url  && { kind: 'linkedin'  as const, label: 'LinkedIn',            href: profile.linkedin_url },
+    profile?.instagram_url && { kind: 'instagram' as const, label: 'Instagram',           href: profile.instagram_url },
+    profile?.facebook_url  && { kind: 'facebook'  as const, label: 'Facebook',            href: profile.facebook_url },
+    profile?.x_url         && { kind: 'x'         as const, label: 'X',                   href: profile.x_url },
+    profile?.business_whatsapp && {
+      kind: 'whatsapp' as const,
+      label: 'WhatsApp (Business)',
+      href: `https://wa.me/${profile.business_whatsapp.replace(/\D/g, '')}`,
+    },
+    profile?.personal_whatsapp && {
+      kind: 'whatsapp' as const,
+      label: 'WhatsApp (Personal)',
+      href: `https://wa.me/${profile.personal_whatsapp.replace(/\D/g, '')}`,
+    },
+  ].filter(Boolean) as { kind: SocialKey; label: string; href: string }[];
 
   return (
     <footer className="relative border-t border-silver-700/30 mt-16 sm:mt-20">
@@ -44,29 +55,21 @@ export default function Footer({ profile }: { profile: Profile | null }) {
 
           <div className="md:col-span-4">
             <div className="section-label mb-5">◈ Social</div>
-            <ul className="space-y-2 text-silver-200 text-sm">
-              {links.map(([k, v]) => (
-                <li key={k}>
-                  <a href={v} target="_blank" rel="noreferrer" className="hover:silver-shine">
-                    {k} ↗
-                  </a>
-                </li>
+            <div className="flex flex-wrap gap-3">
+              {socials.map((s, i) => (
+                <a
+                  key={`${s.kind}-${i}`}
+                  href={s.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={s.label}
+                  title={s.label}
+                  className="group grid place-items-center w-11 h-11 rounded-lg silver-border glass text-silver-300 hover:text-silver-100 hover:border-silver-300/60 transition"
+                >
+                  <SocialIcon kind={s.kind} className="w-5 h-5" />
+                </a>
               ))}
-              {profile?.business_whatsapp && (
-                <li>
-                  <a href={`https://wa.me/${profile.business_whatsapp.replace(/\D/g, '')}`} className="hover:silver-shine" target="_blank" rel="noreferrer">
-                    WhatsApp (Business) ↗
-                  </a>
-                </li>
-              )}
-              {profile?.personal_whatsapp && (
-                <li>
-                  <a href={`https://wa.me/${profile.personal_whatsapp.replace(/\D/g, '')}`} className="hover:silver-shine" target="_blank" rel="noreferrer">
-                    WhatsApp (Personal) ↗
-                  </a>
-                </li>
-              )}
-            </ul>
+            </div>
           </div>
         </div>
 

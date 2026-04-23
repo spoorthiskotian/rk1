@@ -72,7 +72,7 @@ export default function About({ profile }: { profile: Profile | null }) {
             </div>
           )}
 
-          <div className="grid grid-cols-3 gap-3 sm:gap-4">
+          <div className="flex justify-center">
             {[
               ['5+', 'Years building'],
             ].map(([n, l], i) => (
@@ -82,7 +82,7 @@ export default function About({ profile }: { profile: Profile | null }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: i * 0.1 }}
-                className="glass silver-border rounded-2xl p-4 sm:p-6"
+                className="glass silver-border rounded-2xl p-4 sm:p-6 w-full max-w-[200px] text-center"
               >
                 <div className="font-display text-3xl sm:text-4xl md:text-5xl silver-shine">{n}</div>
                 <div className="mt-1 sm:mt-2 text-silver-400 text-xs sm:text-sm">{l}</div>
